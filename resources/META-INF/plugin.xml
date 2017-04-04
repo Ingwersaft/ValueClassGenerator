@@ -30,6 +30,10 @@
 
   <actions>
     <!-- Add your actions here -->
+    <action id="GenerateValueClass" class="GenerateValueClass" text="GenerateValueClass"
+            description="for the currently selected file, generate a value class">
+      <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+    </action>
   </actions>
 
 </idea-plugin>
