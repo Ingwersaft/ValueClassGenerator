@@ -11,7 +11,13 @@ import com.intellij.psi.PsiVariable;
 import com.intellij.psi.util.PsiElementFilter;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtilBase;
+import com.kesselring.valuegenerator.Type;
+import com.kesselring.valuegenerator.Variable;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GenerateValueClass extends EditorAction {
 
@@ -19,6 +25,8 @@ public class GenerateValueClass extends EditorAction {
         super(new EditorActionHandler() {
             @Override
             protected void doExecute(Editor editor, @Nullable Caret caret, DataContext dataContext) {
+                System.out.println("doExecute called: editor = [" + editor + "], caret = [" + caret + "], " +
+                        "dataContext = [" + dataContext + "]");
                 super.doExecute(editor, caret, dataContext);
                 Project project = (Project) dataContext.getData(DataKeys.PROJECT.getName());
                 PsiFile psiFile = PsiUtilBase.getPsiFileInEditor(editor, project);
@@ -31,8 +39,17 @@ public class GenerateValueClass extends EditorAction {
                         return false;
                     }
                 });
-                for (PsiElement var : variables) {
-                    System.out.println(var.toString());
+                try {
+                    List<Variable> variableList = Stream.of(variables)
+                            .map(psiElement -> (PsiVariable) psiElement)
+                            .map(psiVariable -> new Variable(
+                                    new Type(psiVariable.getType().getCanonicalText()),
+                                    new Variable.Name(psiVariable.getName())))
+                            .peek(variable -> System.out.println(variable))
+                            .collect(Collectors.toList());
+                } catch (Exception e) {
+                    System.out.println(e.getClass());
+                    e.printStackTrace();
                 }
             }
         });
