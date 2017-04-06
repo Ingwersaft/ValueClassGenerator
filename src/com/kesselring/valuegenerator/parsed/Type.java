@@ -26,6 +26,10 @@ public class Type {
         return aPackage;
     }
 
+    public ClassName getClassName() {
+        return className;
+    }
+
     @Override
     public String toString() {
         return "Type{" +
@@ -46,7 +50,7 @@ public class Type {
         }
     }
 
-    private class ClassName {
+    public static class ClassName {
         private String value;
 
         public String getValue() {
