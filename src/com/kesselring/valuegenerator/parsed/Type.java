@@ -38,6 +38,24 @@ public class Type {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Type type = (Type) o;
+
+        if (!getaPackage().equals(type.getaPackage())) return false;
+        return getClassName().equals(type.getClassName());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getaPackage().hashCode();
+        result = 31 * result + getClassName().hashCode();
+        return result;
+    }
+
     public static class Package {
         private String value;
 
@@ -47,6 +65,21 @@ public class Type {
 
         public Package(String value) {
             this.value = value;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Package aPackage = (Package) o;
+
+            return getValue().equals(aPackage.getValue());
+        }
+
+        @Override
+        public int hashCode() {
+            return getValue().hashCode();
         }
     }
 
@@ -59,6 +92,21 @@ public class Type {
 
         public ClassName(String value) {
             this.value = value;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            ClassName className = (ClassName) o;
+
+            return getValue().equals(className.getValue());
+        }
+
+        @Override
+        public int hashCode() {
+            return getValue().hashCode();
         }
     }
 }

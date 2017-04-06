@@ -18,7 +18,14 @@ public class CreateValueClassFields {
     public String asString() {
         StringJoiner lineJoiner = new StringJoiner("\n");
         variables.stream().forEach(variable -> lineJoiner.add(
-                "private " + variable.getUppercasedName() + " " + variable.getName().getValue() + ";"));
+                "private " + determinClassName(variable) + " " + variable.getName().getValue() + ";"));
         return lineJoiner.toString();
+    }
+
+    private String determinClassName(Variable variable) {
+        if (SupportedClasses.ALL.contains(variable.getType())) {
+            return variable.getUppercasedName();
+        }
+        return variable.getType().getClassName().getValue();
     }
 }

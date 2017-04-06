@@ -39,12 +39,19 @@ public class CreateConstructor {
         variables.stream().forEach(variable -> {
             String name = variable.getName().getValue();
             String nameUpperCased = name.substring(0, 1).toUpperCase() + name.substring(1);
-            constructorParams.add(nameUpperCased + " " + name);
+            constructorParams.add(determinClassName(variable) + " " + name);
         });
         resultBuilder.append(constructorParams.toString());
         resultBuilder.append(
                 ") {");
         return resultBuilder.toString();
+    }
+
+    private String determinClassName(Variable variable) {
+        if (SupportedClasses.ALL.contains(variable.getType())) {
+            return variable.getUppercasedName();
+        }
+        return variable.getType().getClassName().getValue();
     }
 
     public static void main(String[] args) {
