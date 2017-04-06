@@ -1,5 +1,6 @@
 package com.kesselring.valuegenerator.generator;
 
+import com.kesselring.valuegenerator.parsed.Type;
 import com.kesselring.valuegenerator.parsed.Variable;
 
 import java.util.StringJoiner;
@@ -26,5 +27,14 @@ public class CreateValueSubclass {
         resultLineJointer.add("\t}");
         resultLineJointer.add("}");
         return resultLineJointer.toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(
+                new CreateValueSubclass(new Variable(new Type("java.lang.String"),
+                        new Variable.Name("name"))).asString());
+        System.out.println(
+                new CreateValueSubclass(new Variable(new Type("java.lang.Integer"),
+                        new Variable.Name("age"))).asString());
     }
 }
