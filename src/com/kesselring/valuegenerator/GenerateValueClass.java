@@ -13,6 +13,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiVariable;
 import com.intellij.psi.impl.source.PsiClassImpl;
 import com.intellij.psi.util.PsiUtilBase;
+import com.kesselring.valuegenerator.generator.CreateValueClass;
 import com.kesselring.valuegenerator.parsed.SourceClass;
 import com.kesselring.valuegenerator.parsed.Type;
 import com.kesselring.valuegenerator.parsed.Variable;
@@ -54,6 +55,7 @@ public class GenerateValueClass extends EditorAction {
                                 new Variable.Name(psiVariable.getName())))
                         .peek(System.out::println)
                         .collect(Collectors.toList());
+                System.out.println(new CreateValueClass(elements, sourceClass).asString());
             }
         });
     }

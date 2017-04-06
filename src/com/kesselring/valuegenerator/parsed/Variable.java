@@ -18,6 +18,10 @@ public class Variable {
         return name;
     }
 
+    public String getUppercasedName() {
+        return name.getValue().substring(0, 1).toUpperCase() + name.getValue().substring(1);
+    }
+
     @Override
     public String toString() {
         return "Variable{" +
