@@ -7,6 +7,9 @@ public class Type {
     private ClassName className;
 
     public Type(String canonicalName) {
+        if(isPrimitive(canonicalName)) {
+            canonicalName = convertPrimitiveToWrapper(canonicalName);
+        }
         if (!canonicalName.contains(".")) {
             throw new RuntimeException("canonicalName contains no dot??");
         }
@@ -15,6 +18,14 @@ public class Type {
         String className = splitted[splitted.length - 1];
         this.aPackage = new Package(packageValue);
         this.className = new ClassName(className);
+    }
+
+    private String convertPrimitiveToWrapper(String canonicalName) {
+        return null;
+    }
+
+    private boolean isPrimitive(String canonicalName) {
+        return false;
     }
 
     public Type(Package aPackage, ClassName className) {
