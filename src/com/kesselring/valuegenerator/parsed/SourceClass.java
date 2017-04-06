@@ -1,9 +1,9 @@
 package com.kesselring.valuegenerator.parsed;
 
-public class SourceClassName {
+public class SourceClass {
     private String name;
 
-    public SourceClassName(String name) {
+    public SourceClass(String name) {
         this.name = name;
     }
 
@@ -13,7 +13,7 @@ public class SourceClassName {
 
     @Override
     public String toString() {
-        return "SourceClassName{" +
+        return "SourceClass{" +
                 "name='" + name + '\'' +
                 '}';
     }

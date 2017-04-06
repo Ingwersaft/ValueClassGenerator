@@ -8,11 +8,12 @@ import com.intellij.openapi.editor.actionSystem.EditorAction;
 import com.intellij.openapi.editor.actionSystem.EditorActionHandler;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiVariable;
 import com.intellij.psi.impl.source.PsiClassImpl;
 import com.intellij.psi.util.PsiUtilBase;
-import com.kesselring.valuegenerator.parsed.SourceClassName;
+import com.kesselring.valuegenerator.parsed.SourceClass;
 import com.kesselring.valuegenerator.parsed.Type;
 import com.kesselring.valuegenerator.parsed.Variable;
 import org.jetbrains.annotations.Nullable;
@@ -40,12 +41,12 @@ public class GenerateValueClass extends EditorAction {
                         .peek(System.out::println)
                         .map(psiElement -> (PsiClass) psiElement)
                         .collect(Collectors.toList()).get(0);
-                SourceClassName sourceClassName = new SourceClassName(className.getQualifiedName());
-                System.out.println("class found: " + sourceClassName);
+                SourceClass sourceClass = new SourceClass(className.getQualifiedName());
+                System.out.println("class found: " + sourceClass);
                 List<Variable> elements = Stream.of(psiFile.getChildren())
                         .filter(psiElement -> psiElement instanceof PsiClassImpl)
-                        .map(psiElement -> psiElement.getChildren())
-                        .flatMap(psiElements -> Arrays.asList(psiElements).stream())
+                        .map(PsiElement::getChildren)
+                        .flatMap(Arrays::stream)
                         .filter(psiElement -> psiElement instanceof PsiVariable)
                         .map(psiElement -> (PsiVariable) psiElement)
                         .map(psiVariable -> new Variable(

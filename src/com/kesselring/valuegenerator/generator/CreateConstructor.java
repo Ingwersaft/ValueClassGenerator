@@ -1,6 +1,6 @@
 package com.kesselring.valuegenerator.generator;
 
-import com.kesselring.valuegenerator.parsed.SourceClassName;
+import com.kesselring.valuegenerator.parsed.SourceClass;
 import com.kesselring.valuegenerator.parsed.Type;
 import com.kesselring.valuegenerator.parsed.Variable;
 
@@ -12,11 +12,11 @@ import java.util.StringJoiner;
  * Created by mauer on 06.04.17.
  */
 public class CreateConstructor {
-    private SourceClassName sourceClassName;
+    private SourceClass sourceClass;
     private List<Variable> variables;
 
-    public CreateConstructor(SourceClassName sourceClassName, List<Variable> variables) {
-        this.sourceClassName = sourceClassName;
+    public CreateConstructor(SourceClass sourceClass, List<Variable> variables) {
+        this.sourceClass = sourceClass;
         this.variables = variables;
     }
 
@@ -33,7 +33,7 @@ public class CreateConstructor {
         StringBuilder resultBuilder = new StringBuilder();
         resultBuilder
                 .append("public ")
-                .append(sourceClassName.getName())
+                .append(sourceClass.getName())
                 .append("(");
         StringJoiner constructorParams = new StringJoiner(", ");
         variables.stream().forEach(variable -> {
@@ -57,6 +57,6 @@ public class CreateConstructor {
                 new Variable.Name("address")));
         vars.add(new Variable(new Type("java.lang.Integer"),
                 new Variable.Name("age")));
-        System.out.println(new CreateConstructor(new SourceClassName("User"), vars).asString());
+        System.out.println(new CreateConstructor(new SourceClass("User"), vars).asString());
     }
 }
