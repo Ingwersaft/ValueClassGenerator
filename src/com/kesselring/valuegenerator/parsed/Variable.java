@@ -1,4 +1,4 @@
-package com.kesselring.valuegenerator;
+package com.kesselring.valuegenerator.parsed;
 
 public class Variable {
 

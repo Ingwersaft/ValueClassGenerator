@@ -1,3 +1,5 @@
+package com.kesselring.valuegenerator;
+
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.editor.Caret;
@@ -11,8 +13,8 @@ import com.intellij.psi.PsiVariable;
 import com.intellij.psi.util.PsiElementFilter;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtilBase;
-import com.kesselring.valuegenerator.Type;
-import com.kesselring.valuegenerator.Variable;
+import com.kesselring.valuegenerator.parsed.Type;
+import com.kesselring.valuegenerator.parsed.Variable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

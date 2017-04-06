@@ -30,7 +30,7 @@
 
   <actions>
     <!-- Add your actions here -->
-    <action id="GenerateValueClass" class="GenerateValueClass" text="GenerateValueClass"
+    <action id="GenerateValueClass" class="com.kesselring.valuegenerator.GenerateValueClass" text="GenerateValueClass Editor Action"
             description="for the currently selected file, generate a value class">
       <add-to-group group-id="EditorPopupMenu" anchor="last"/>
     </action>

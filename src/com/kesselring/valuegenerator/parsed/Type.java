@@ -1,4 +1,4 @@
-package com.kesselring.valuegenerator;
+package com.kesselring.valuegenerator.parsed;
 
 import java.util.Arrays;
 
