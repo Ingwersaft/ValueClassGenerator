@@ -1,26 +1,25 @@
 package com.kesselring.valuegenerator.parsed;
 
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Type {
     // only supported classes will be transformed to value subclasses
-    public static final List<Type> ALL_SUPPORTED_CLASSES = Arrays.asList(
-            new Type("java.lang.String"),
-            new Type("java.lang.Integer")
-    );
+    public static final Map<String, Type> ALL_SUPPORTED_CLASSES_AND_PRIMITIVES = Stream.of(
+            new AbstractMap.SimpleEntry<>("NA", new Type("java.lang.String")),
+            new AbstractMap.SimpleEntry<>("int", new Type("java.lang.Integer"))
+    ).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()));
 
     private Package aPackage;
     private ClassName className;
 
     public Type(String canonicalName) {
-        if (isPrimitive(canonicalName)) {
-            canonicalName = convertPrimitiveToWrapper(canonicalName);
-        }
-        if (!canonicalName.contains(".")) {
-            throw new RuntimeException("canonicalName contains no dot??");
-        }
-        String[] splitted = canonicalName.split("\\.");
+        String primitivesHandled = convertPrimitiveToWrapper(canonicalName);
+        String[] splitted = primitivesHandled.split("\\.");
         String packageValue = String.join(".", Arrays.asList(splitted).subList(0, splitted.length - 1));
         String className = splitted[splitted.length - 1];
         this.aPackage = new Package(packageValue);
@@ -28,7 +27,23 @@ public class Type {
     }
 
     private String convertPrimitiveToWrapper(String canonicalName) {
-        return null;
+        if (!canonicalName.contains(".")) {
+            System.out.println("going to handle primitive: " + canonicalName);
+            List<String> primitiveEquivalents = ALL_SUPPORTED_CLASSES_AND_PRIMITIVES.entrySet().stream()
+                    .filter(stringTypeEntry -> stringTypeEntry.getKey().equals(canonicalName))
+                    .map(
+                            stringTypeEntry -> stringTypeEntry.getValue().getaPackage().getValue()
+                                    + "."
+                                    + stringTypeEntry.getValue().getClassName().getValue())
+                    .collect(Collectors.toList());
+            if (primitiveEquivalents.size() != 1) {
+                throw new IllegalStateException("no equivalent found: " + primitiveEquivalents);
+            } else {
+                return primitiveEquivalents.get(0);
+            }
+        } else {
+            return canonicalName;
+        }
     }
 
     private boolean isPrimitive(String canonicalName) {

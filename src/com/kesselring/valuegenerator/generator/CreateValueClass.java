@@ -22,7 +22,7 @@ public class CreateValueClass {
         resultLineJointer.add("");
         resultLineJointer.add(new CreateConstructor(sourceClass, variables).asString());
         resultLineJointer.add("");
-        variables.stream().filter(variable -> Type.ALL_SUPPORTED_CLASSES.contains(variable.getType())).forEach(variable -> resultLineJointer.add(new CreateValueSubclass(variable).asString()));
+        variables.stream().filter(variable -> Type.ALL_SUPPORTED_CLASSES_AND_PRIMITIVES.values().contains(variable.getType())).forEach(variable -> resultLineJointer.add(new CreateValueSubclass(variable).asString()));
         return resultLineJointer.toString();
     }
 }

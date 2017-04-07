@@ -24,7 +24,7 @@ public class CreateValueClassFields {
     }
 
     private String determinClassName(Variable variable) {
-        if (Type.ALL_SUPPORTED_CLASSES.contains(variable.getType())) {
+        if (Type.ALL_SUPPORTED_CLASSES_AND_PRIMITIVES.values().contains(variable.getType())) {
             return variable.getUppercasedName();
         }
         return variable.getType().getClassName().getValue();
