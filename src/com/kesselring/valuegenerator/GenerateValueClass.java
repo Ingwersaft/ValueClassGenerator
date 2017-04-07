@@ -2,18 +2,16 @@ package com.kesselring.valuegenerator;
 
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Caret;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.actionSystem.EditorAction;
 import com.intellij.openapi.editor.actionSystem.EditorActionHandler;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiVariable;
+import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiClassImpl;
 import com.intellij.psi.util.PsiUtilBase;
-import com.kesselring.valuegenerator.generator.CreateValueClass;
+import com.kesselring.valuegenerator.generator.CreateValueSubclass;
 import com.kesselring.valuegenerator.parsed.SourceClass;
 import com.kesselring.valuegenerator.parsed.Type;
 import com.kesselring.valuegenerator.parsed.Variable;
@@ -55,7 +53,24 @@ public class GenerateValueClass extends EditorAction {
                                 new Variable.Name(psiVariable.getName())))
                         .peek(System.out::println)
                         .collect(Collectors.toList());
-                System.out.println(new CreateValueClass(elements, sourceClass).asString());
+//                System.out.println(new CreateValueClass(elements, sourceClass).asString());
+                //
+                List<PsiVariable> psiVariables = Stream.of(psiFile.getChildren())
+                        .filter(psiElement -> psiElement instanceof PsiClassImpl)
+                        .map(PsiElement::getChildren)
+                        .flatMap(Arrays::stream)
+                        .filter(psiElement -> psiElement instanceof PsiVariable)
+                        .map(psiElement -> (PsiVariable) psiElement).collect(Collectors.toList());
+
+                final PsiElementFactory factory = JavaPsiFacade.getInstance(project).getElementFactory();
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        PsiClass createdValueSubClassPsi = new CreateValueSubclass(new Variable(new Type("java.lang.String"), new Variable.Name("surname")), project).asPsi();
+                        psiVariables.get(psiVariables.size() - 1).add(createdValueSubClassPsi);
+                    }
+                };
+                WriteCommandAction.runWriteCommandAction(project, runnable);
             }
         });
     }

@@ -1,5 +1,8 @@
 package com.kesselring.valuegenerator.generator;
 
+import com.intellij.openapi.project.Project;
+import com.intellij.psi.*;
+import com.intellij.util.IncorrectOperationException;
 import com.kesselring.valuegenerator.parsed.Type;
 import com.kesselring.valuegenerator.parsed.Variable;
 
@@ -7,9 +10,11 @@ import java.util.StringJoiner;
 
 public class CreateValueSubclass {
     private Variable variable;
+    private Project project;
 
-    public CreateValueSubclass(Variable variable) {
+    public CreateValueSubclass(Variable variable, Project project) {
         this.variable = variable;
+        this.project = project;
     }
 
     public String asString() {
@@ -30,6 +35,23 @@ public class CreateValueSubclass {
         return resultLineJointer.toString();
     }
 
+    public PsiClass asPsi() {
+        try {
+            PsiElementFactory factory = JavaPsiFacade.getInstance(project).getElementFactory();
+            PsiClass resultingValueSubClass = factory.createClass(variable.getName().getUppercasedValue());
+            PsiType psiType = factory.createTypeByFQClassName(variable.getType().getaPackage().getValue() + "." + variable.getType().getClassName().getValue());
+            PsiDeclarationStatement variableDeclarationStatement =
+                    factory.createVariableDeclarationStatement(variable.getType().getClassName().getValue(), psiType, null);
+            resultingValueSubClass.add(variableDeclarationStatement);
+            return resultingValueSubClass;
+        } catch (IncorrectOperationException e) {
+            System.out.println(e.getClass());
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     private String createOfMethode() {
         return "";
     }
@@ -37,9 +59,9 @@ public class CreateValueSubclass {
     public static void main(String[] args) {
         System.out.println(
                 new CreateValueSubclass(new Variable(new Type("java.lang.String"),
-                        new Variable.Name("name"))).asString());
+                        new Variable.Name("name")), null).asString());
         System.out.println(
                 new CreateValueSubclass(new Variable(new Type("java.lang.Integer"),
-                        new Variable.Name("age"))).asString());
+                        new Variable.Name("age")), null).asString());
     }
 }

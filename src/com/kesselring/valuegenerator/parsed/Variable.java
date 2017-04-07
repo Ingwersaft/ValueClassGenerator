@@ -37,6 +37,10 @@ public class Variable {
             return value;
         }
 
+        public String getUppercasedValue() {
+            return value.substring(0, 1).toUpperCase() + value.substring(1);
+        }
+
         public Name(String value) {
             this.value = value;
         }
