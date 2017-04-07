@@ -1,5 +1,6 @@
 package com.kesselring.valuegenerator.generator;
 
+import com.kesselring.valuegenerator.parsed.Type;
 import com.kesselring.valuegenerator.parsed.Variable;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class CreateValueClassFields {
     }
 
     private String determinClassName(Variable variable) {
-        if (SupportedClasses.ALL.contains(variable.getType())) {
+        if (Type.ALL_SUPPORTED_CLASSES.contains(variable.getType())) {
             return variable.getUppercasedName();
         }
         return variable.getType().getClassName().getValue();

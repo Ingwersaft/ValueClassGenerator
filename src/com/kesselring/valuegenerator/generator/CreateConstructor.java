@@ -48,7 +48,7 @@ public class CreateConstructor {
     }
 
     private String determinClassName(Variable variable) {
-        if (SupportedClasses.ALL.contains(variable.getType())) {
+        if (Type.ALL_SUPPORTED_CLASSES.contains(variable.getType())) {
             return variable.getUppercasedName();
         }
         return variable.getType().getClassName().getValue();

@@ -1,6 +1,7 @@
 package com.kesselring.valuegenerator.generator;
 
 import com.kesselring.valuegenerator.parsed.SourceClass;
+import com.kesselring.valuegenerator.parsed.Type;
 import com.kesselring.valuegenerator.parsed.Variable;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class CreateValueClass {
         resultLineJointer.add("");
         resultLineJointer.add(new CreateConstructor(sourceClass, variables).asString());
         resultLineJointer.add("");
-        variables.stream().filter(variable -> SupportedClasses.ALL.contains(variable.getType())).forEach(variable -> resultLineJointer.add(new CreateValueSubclass(variable).asString()));
+        variables.stream().filter(variable -> Type.ALL_SUPPORTED_CLASSES.contains(variable.getType())).forEach(variable -> resultLineJointer.add(new CreateValueSubclass(variable).asString()));
         return resultLineJointer.toString();
     }
 }

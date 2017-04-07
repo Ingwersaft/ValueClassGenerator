@@ -1,13 +1,20 @@
 package com.kesselring.valuegenerator.parsed;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Type {
+    // only supported classes will be transformed to value subclasses
+    public static final List<Type> ALL_SUPPORTED_CLASSES = Arrays.asList(
+            new Type("java.lang.String"),
+            new Type("java.lang.Integer")
+    );
+
     private Package aPackage;
     private ClassName className;
 
     public Type(String canonicalName) {
-        if(isPrimitive(canonicalName)) {
+        if (isPrimitive(canonicalName)) {
             canonicalName = convertPrimitiveToWrapper(canonicalName);
         }
         if (!canonicalName.contains(".")) {

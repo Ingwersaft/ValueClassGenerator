@@ -41,5 +41,4 @@ public class Variable {
             this.value = value;
         }
     }
-
 }
