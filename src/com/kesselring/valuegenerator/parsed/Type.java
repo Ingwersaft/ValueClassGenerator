@@ -11,7 +11,14 @@ public class Type {
     // only supported classes will be transformed to value subclasses
     public static final Map<String, Type> ALL_SUPPORTED_CLASSES_AND_PRIMITIVES = Stream.of(
             new AbstractMap.SimpleEntry<>("NA", new Type("java.lang.String")),
-            new AbstractMap.SimpleEntry<>("int", new Type("java.lang.Integer"))
+            new AbstractMap.SimpleEntry<>("int", new Type("java.lang.Integer")),
+            new AbstractMap.SimpleEntry<>("boolean", new Type("java.lang.Boolean")),
+            new AbstractMap.SimpleEntry<>("byte", new Type("java.lang.Byte")),
+            new AbstractMap.SimpleEntry<>("char", new Type("java.lang.Character")),
+            new AbstractMap.SimpleEntry<>("float", new Type("java.lang.Float")),
+            new AbstractMap.SimpleEntry<>("long", new Type("java.lang.Long")),
+            new AbstractMap.SimpleEntry<>("short", new Type("java.lang.Short")),
+            new AbstractMap.SimpleEntry<>("double", new Type("java.lang.Double"))
     ).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()));
 
     private Package aPackage;
