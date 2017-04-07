@@ -9,6 +9,7 @@ import com.intellij.openapi.editor.actionSystem.EditorAction;
 import com.intellij.openapi.editor.actionSystem.EditorActionHandler;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
+import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.impl.source.PsiClassImpl;
 import com.intellij.psi.util.PsiUtilBase;
 import com.kesselring.valuegenerator.generator.CreateValueSubclass;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -66,8 +68,16 @@ public class GenerateValueClass extends EditorAction {
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-                        PsiClass createdValueSubClassPsi = new CreateValueSubclass(new Variable(new Type("java.lang.String"), new Variable.Name("surname")), project).asPsi();
-                        psiVariables.get(psiVariables.size() - 1).add(createdValueSubClassPsi);
+                        PsiClass createdValueSubClassPsi =
+                                new CreateValueSubclass(new Variable(new Type("java.lang.String"), new Variable.Name("surname")), project).asPsi();
+
+                        Optional<PsiClassImpl> javaClass = Stream.of(psiFile.getChildren())
+                                .filter(psiElement -> psiElement instanceof PsiClassImpl)
+                                .map(psiElement -> (PsiClassImpl) psiElement).findFirst();
+
+                        javaClass.get().add(createdValueSubClassPsi);
+
+                        CodeStyleManager.getInstance(project).reformat(javaClass.get());
                     }
                 };
                 WriteCommandAction.runWriteCommandAction(project, runnable);

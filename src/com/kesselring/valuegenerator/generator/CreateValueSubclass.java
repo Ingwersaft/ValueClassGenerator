@@ -38,11 +38,16 @@ public class CreateValueSubclass {
     public PsiClass asPsi() {
         try {
             PsiElementFactory factory = JavaPsiFacade.getInstance(project).getElementFactory();
+
             PsiClass resultingValueSubClass = factory.createClass(variable.getName().getUppercasedValue());
+            System.out.println(resultingValueSubClass);
             PsiType psiType = factory.createTypeByFQClassName(variable.getType().getaPackage().getValue() + "." + variable.getType().getClassName().getValue());
-            PsiDeclarationStatement variableDeclarationStatement =
-                    factory.createVariableDeclarationStatement(variable.getType().getClassName().getValue(), psiType, null);
+            System.out.println(psiType);
+            PsiVariable variableDeclarationStatement = factory.createField(variable.getName().getValue(), psiType);
+//                    factory.createVariableDeclarationStatement(variable.getName().getValue(), psiType, null);
+            System.out.println(variableDeclarationStatement);
             resultingValueSubClass.add(variableDeclarationStatement);
+            System.out.println(resultingValueSubClass);
             return resultingValueSubClass;
         } catch (IncorrectOperationException e) {
             System.out.println(e.getClass());
