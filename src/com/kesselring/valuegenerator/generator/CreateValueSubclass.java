@@ -25,8 +25,13 @@ public class CreateValueSubclass {
         resultLineJointer.add("\tpublic " + className + "(" + classType + " " + nameValue + ") {");
         resultLineJointer.add("\t\tthis." + nameValue + " = " + nameValue + ";");
         resultLineJointer.add("\t}");
+        resultLineJointer.add(createOfMethode());
         resultLineJointer.add("}");
         return resultLineJointer.toString();
+    }
+
+    private String createOfMethode() {
+        return "";
     }
 
     public static void main(String[] args) {
