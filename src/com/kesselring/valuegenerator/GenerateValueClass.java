@@ -8,11 +8,14 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.actionSystem.EditorAction;
 import com.intellij.openapi.editor.actionSystem.EditorActionHandler;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiVariable;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.impl.source.PsiClassImpl;
 import com.intellij.psi.util.PsiUtilBase;
-import com.kesselring.valuegenerator.generator.CreateValueSubclass;
+import com.kesselring.valuegenerator.generator.CreateValueClass;
 import com.kesselring.valuegenerator.parsed.SourceClass;
 import com.kesselring.valuegenerator.parsed.Type;
 import com.kesselring.valuegenerator.parsed.Variable;
@@ -33,7 +36,9 @@ public class GenerateValueClass extends EditorAction {
                 System.out.println("doExecute called: editor = [" + editor + "], caret = [" + caret + "], " +
                         "dataContext = [" + dataContext + "]");
                 super.doExecute(editor, caret, dataContext);
+
                 Project project = (Project) dataContext.getData(DataKeys.PROJECT.getName());
+
                 PsiFile psiFile = PsiUtilBase.getPsiFileInEditor(editor, project);
 
                 PsiClass className = Stream.of(psiFile.getChildren())
@@ -43,8 +48,8 @@ public class GenerateValueClass extends EditorAction {
                         .map(psiElement -> (PsiClass) psiElement)
                         .collect(Collectors.toList()).get(0);
                 SourceClass sourceClass = new SourceClass(className.getQualifiedName());
-                System.out.println("class found: " + sourceClass);
-                List<Variable> elements = Stream.of(psiFile.getChildren())
+
+                List<Variable> variables = Stream.of(psiFile.getChildren())
                         .filter(psiElement -> psiElement instanceof PsiClassImpl)
                         .map(PsiElement::getChildren)
                         .flatMap(Arrays::stream)
@@ -55,30 +60,19 @@ public class GenerateValueClass extends EditorAction {
                                 new Variable.Name(psiVariable.getName())))
                         .peek(System.out::println)
                         .collect(Collectors.toList());
-//                System.out.println(new CreateValueClass(elements, sourceClass).asString());
-                //
-                List<PsiVariable> psiVariables = Stream.of(psiFile.getChildren())
-                        .filter(psiElement -> psiElement instanceof PsiClassImpl)
-                        .map(PsiElement::getChildren)
-                        .flatMap(Arrays::stream)
-                        .filter(psiElement -> psiElement instanceof PsiVariable)
-                        .map(psiElement -> (PsiVariable) psiElement).collect(Collectors.toList());
 
-                final PsiElementFactory factory = JavaPsiFacade.getInstance(project).getElementFactory();
-                Runnable runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        PsiClass createdValueSubClassPsi =
-                                new CreateValueSubclass(new Variable(new Type("java.lang.String"), new Variable.Name("surname")), project).asPsi();
+                Runnable runnable = () -> {
+                    Optional<PsiClassImpl> javaClass = Stream.of(psiFile.getChildren())
+                            .filter(psiElement -> psiElement instanceof PsiClassImpl)
+                            .map(psiElement -> (PsiClassImpl) psiElement).findFirst();
 
-                        Optional<PsiClassImpl> javaClass = Stream.of(psiFile.getChildren())
-                                .filter(psiElement -> psiElement instanceof PsiClassImpl)
-                                .map(psiElement -> (PsiClassImpl) psiElement).findFirst();
+                    Stream.of(javaClass.get().getAllFields()).forEach(psiField -> psiField.delete());
 
-                        javaClass.get().add(createdValueSubClassPsi);
+                    new CreateValueClass(variables, sourceClass, project).asPsi()
+                            .forEach(psiElement ->
+                                    javaClass.get().add(psiElement));
 
-                        CodeStyleManager.getInstance(project).reformat(javaClass.get());
-                    }
+                    CodeStyleManager.getInstance(project).reformat(javaClass.get());
                 };
                 WriteCommandAction.runWriteCommandAction(project, runnable);
             }

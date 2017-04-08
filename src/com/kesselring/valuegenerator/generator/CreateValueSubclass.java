@@ -1,8 +1,9 @@
 package com.kesselring.valuegenerator.generator;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
-import com.intellij.util.IncorrectOperationException;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElementFactory;
 import com.kesselring.valuegenerator.parsed.Type;
 import com.kesselring.valuegenerator.parsed.Variable;
 
@@ -11,10 +12,21 @@ import java.util.StringJoiner;
 public class CreateValueSubclass {
     private Variable variable;
     private Project project;
+    private PsiElementFactory factory;
 
     public CreateValueSubclass(Variable variable, Project project) {
         this.variable = variable;
         this.project = project;
+        this.factory = JavaPsiFacade.getInstance(project).getElementFactory();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(
+                new CreateValueSubclass(new Variable(new Type("java.lang.String"),
+                        new Variable.Name("name")), null).asString());
+        System.out.println(
+                new CreateValueSubclass(new Variable(new Type("java.lang.Integer"),
+                        new Variable.Name("age")), null).asString());
     }
 
     public String asString() {
@@ -36,37 +48,11 @@ public class CreateValueSubclass {
     }
 
     public PsiClass asPsi() {
-        try {
-            PsiElementFactory factory = JavaPsiFacade.getInstance(project).getElementFactory();
-
-            PsiClass resultingValueSubClass = factory.createClass(variable.getName().getUppercasedValue());
-            System.out.println(resultingValueSubClass);
-            PsiType psiType = factory.createTypeByFQClassName(variable.getType().getaPackage().getValue() + "." + variable.getType().getClassName().getValue());
-            System.out.println(psiType);
-            PsiVariable variableDeclarationStatement = factory.createField(variable.getName().getValue(), psiType);
-//                    factory.createVariableDeclarationStatement(variable.getName().getValue(), psiType, null);
-            System.out.println(variableDeclarationStatement);
-            resultingValueSubClass.add(variableDeclarationStatement);
-            System.out.println(resultingValueSubClass);
-            return resultingValueSubClass;
-        } catch (IncorrectOperationException e) {
-            System.out.println(e.getClass());
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            throw e;
-        }
+        PsiClass psiClass = factory.createClassFromText(asString(), null);
+        return psiClass.getInnerClasses()[0];
     }
 
     private String createOfMethode() {
         return "";
-    }
-
-    public static void main(String[] args) {
-        System.out.println(
-                new CreateValueSubclass(new Variable(new Type("java.lang.String"),
-                        new Variable.Name("name")), null).asString());
-        System.out.println(
-                new CreateValueSubclass(new Variable(new Type("java.lang.Integer"),
-                        new Variable.Name("age")), null).asString());
     }
 }
