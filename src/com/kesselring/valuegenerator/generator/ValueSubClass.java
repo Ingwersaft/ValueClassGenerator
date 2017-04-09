@@ -1,22 +1,14 @@
 package com.kesselring.valuegenerator.generator;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.JavaPsiFacade;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElementFactory;
 import com.kesselring.valuegenerator.parsed.Variable;
 
 import java.util.StringJoiner;
 
-public class CreateValueSubclass {
+public class ValueSubClass {
     private Variable variable;
-    private Project project;
-    private PsiElementFactory factory;
 
-    public CreateValueSubclass(Variable variable, Project project) {
+    public ValueSubClass(Variable variable) {
         this.variable = variable;
-        this.project = project;
-        this.factory = JavaPsiFacade.getInstance(project).getElementFactory();
     }
 
     public String asString() {
@@ -35,13 +27,8 @@ public class CreateValueSubclass {
         resultLineJointer.add(createOfMethode());
         resultLineJointer.add("}");
         String s = resultLineJointer.toString();
-        System.out.println("CreateValueSubclass: " + s);
+        System.out.println("ValueSubClass: " + s);
         return s;
-    }
-
-    public PsiClass asPsi() {
-        PsiClass psiClass = factory.createClassFromText(asString(), null);
-        return psiClass.getInnerClasses()[0];
     }
 
     private String createOfMethode() {
