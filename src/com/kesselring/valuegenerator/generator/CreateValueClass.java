@@ -23,7 +23,7 @@ public class CreateValueClass {
 
     public String asString() {
         StringJoiner resultLineJointer = new StringJoiner("\n");
-        resultLineJointer.add(new CreateValueClassFields(variables).asString());
+        resultLineJointer.add(new CreateValueClassFields(variables, project).asString());
         resultLineJointer.add("");
         resultLineJointer.add(new CreateConstructor(sourceClass, variables, project).asString());
         resultLineJointer.add("");
@@ -36,6 +36,7 @@ public class CreateValueClass {
         List<PsiElement> result = new ArrayList<>();
         result.add(new CreateConstructor(sourceClass, variables, project).asPsi());
         variables.stream().filter(variable -> Type.ALL_SUPPORTED_CLASSES_AND_PRIMITIVES.values().contains(variable.getType()))
+                .peek(variable -> System.out.println("new CreateValueSubclass for: " + variable))
                 .forEach(variable -> result.add(new CreateValueSubclass(variable, project).asPsi()));
         return result;
     }

@@ -4,7 +4,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElementFactory;
-import com.kesselring.valuegenerator.parsed.Type;
 import com.kesselring.valuegenerator.parsed.Variable;
 
 import java.util.StringJoiner;
@@ -18,15 +17,6 @@ public class CreateValueSubclass {
         this.variable = variable;
         this.project = project;
         this.factory = JavaPsiFacade.getInstance(project).getElementFactory();
-    }
-
-    public static void main(String[] args) {
-        System.out.println(
-                new CreateValueSubclass(new Variable(new Type("java.lang.String"),
-                        new Variable.Name("name")), null).asString());
-        System.out.println(
-                new CreateValueSubclass(new Variable(new Type("java.lang.Integer"),
-                        new Variable.Name("age")), null).asString());
     }
 
     public String asString() {
@@ -44,7 +34,9 @@ public class CreateValueSubclass {
         resultLineJointer.add("\t}");
         resultLineJointer.add(createOfMethode());
         resultLineJointer.add("}");
-        return resultLineJointer.toString();
+        String s = resultLineJointer.toString();
+        System.out.println("CreateValueSubclass: " + s);
+        return s;
     }
 
     public PsiClass asPsi() {

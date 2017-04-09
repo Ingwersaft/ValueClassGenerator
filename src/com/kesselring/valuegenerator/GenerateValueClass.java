@@ -8,14 +8,12 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.actionSystem.EditorAction;
 import com.intellij.openapi.editor.actionSystem.EditorActionHandler;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiVariable;
+import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.impl.source.PsiClassImpl;
 import com.intellij.psi.util.PsiUtilBase;
 import com.kesselring.valuegenerator.generator.CreateValueClass;
+import com.kesselring.valuegenerator.generator.CreateValueClassFields;
 import com.kesselring.valuegenerator.parsed.SourceClass;
 import com.kesselring.valuegenerator.parsed.Type;
 import com.kesselring.valuegenerator.parsed.Variable;
@@ -61,18 +59,42 @@ public class GenerateValueClass extends EditorAction {
                         .peek(System.out::println)
                         .collect(Collectors.toList());
 
+                PsiClassImpl psiJavaClass = getRootClassUnderOperation(psiFile);
+                if (psiJavaClass == null) return;
                 Runnable runnable = () -> {
-                    Optional<PsiClassImpl> javaClass = Stream.of(psiFile.getChildren())
-                            .filter(psiElement -> psiElement instanceof PsiClassImpl)
-                            .map(psiElement -> (PsiClassImpl) psiElement).findFirst();
+                    // deleting old fields
+                    Stream.of(psiJavaClass.getAllFields())
+                            .peek(psiField -> System.out.println("going to delete field: " + psiField.getText()))
+                            .forEach(psiField -> psiField.delete());
+                    System.out.println("after deletion:\n" + psiJavaClass.getText());
+                    // deleting orphanage COMMAs
+                    Stream.of(psiJavaClass.getChildren())
+                            .filter(psiElement -> psiElement instanceof PsiJavaToken)
+                            .map(psiElement -> (PsiJavaToken) psiElement)
+                            .filter(psiJavaToken -> "COMMA" .equals(psiJavaToken.getTokenType().toString()))
+                            .peek(psiJavaToken -> System.out.println("going to delete token:" + psiJavaToken))
+                            .forEach(psiElement -> psiElement.delete());
 
-                    Stream.of(javaClass.get().getAllFields()).forEach(psiField -> psiField.delete());
+                    System.out.println("start of additions:");
 
+                    // adding constructor und value subclasses
                     new CreateValueClass(variables, sourceClass, project).asPsi()
+                            .stream()
+                            .peek(psiElement -> System.out.println("going to add:\n" + psiElement.getText()))
                             .forEach(psiElement ->
-                                    javaClass.get().add(psiElement));
+                                    psiJavaClass.add(psiElement));
 
-                    CodeStyleManager.getInstance(project).reformat(javaClass.get());
+                    System.out.println("after createvalueclass additions:\n" + psiJavaClass.getText());
+                    // adding fields
+                    PsiMethod constructor = psiJavaClass.getConstructors()[0];
+                    List<PsiElement> valueClassFields = new CreateValueClassFields(variables, project).asPsi();
+                    valueClassFields
+                            .forEach(psiElement -> {
+                                psiJavaClass.addBefore(psiElement, constructor);
+                            });
+                    System.out.println("after field additions:\n" + psiJavaClass.getText());
+
+                    CodeStyleManager.getInstance(project).reformat(psiFile);
                 };
                 WriteCommandAction.runWriteCommandAction(project, runnable);
             }
@@ -81,5 +103,17 @@ public class GenerateValueClass extends EditorAction {
 
     protected GenerateValueClass(EditorActionHandler defaultHandler) {
         super(defaultHandler);
+    }
+
+    @Nullable
+    private static PsiClassImpl getRootClassUnderOperation(PsiFile psiFile) {
+        Optional<PsiClassImpl> javaClass = Stream.of(psiFile.getChildren())
+                .filter(psiElement -> psiElement instanceof PsiClassImpl)
+                .map(psiElement -> (PsiClassImpl) psiElement).findFirst();
+        if (!javaClass.isPresent()) {
+            return null;
+        }
+        PsiClassImpl psiJavaClass = javaClass.get();
+        return psiJavaClass;
     }
 }
