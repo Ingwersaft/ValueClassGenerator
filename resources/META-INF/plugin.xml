@@ -1,19 +1,19 @@
 <idea-plugin version="2">
-    <id>com.your.company.unique.plugin.id</id>
-    <name>Plugin display name here</name>
+    <id>com.kesselring.valuegenerator</id>
+    <name>Value Class Generator</name>
     <version>1.0</version>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <vendor email="support@yourcompany.com" url="https://github.com/Ingwersaft/ValueClassGenerator">Marcel Kesselring
+    </vendor>
 
     <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      Value class generation. If you don't like writing value classes and also don't want to use AutoValue or Lombok, this is your plugin<br>
     ]]></description>
 
-    <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
-    ]]>
-    </change-notes>
+    <!--<change-notes><![CDATA[-->
+    <!--Add change notes here.<br>-->
+    <!--<em>most HTML tags may be used</em>-->
+    <!--]]>-->
+    <!--</change-notes>-->
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
     <idea-version since-build="145.0"/>
