@@ -11,6 +11,10 @@ public class SourceClass {
         return name;
     }
 
+    public String getLowerCasedName() {
+        return name.toLowerCase();
+    }
+
     @Override
     public String toString() {
         return "SourceClass{" +

@@ -30,7 +30,41 @@ public class ValueClass {
         resultLineJointer.add("");
         variables.stream().filter(variable -> Type.ALL_SUPPORTED_CLASSES_AND_PRIMITIVES.values().contains(variable.getType()))
                 .forEach(variable -> resultLineJointer.add(new ValueSubClass(variable).asString()));
-        return resultLineJointer.toString();
+        resultLineJointer.add(createEquals());
+        resultLineJointer.add(createHashCode());
+        String complete = resultLineJointer.toString();
+        System.out.println(complete);
+        return complete;
+    }
+
+    private String createHashCode() {
+        StringJoiner variableHashParams = new StringJoiner(", ");
+        variables.forEach(variable -> variableHashParams.add(variable.getName().getValue()));
+        String s = variableHashParams.toString();
+        return "@Override\n" +
+                "    public int hashCode() {\n" +
+                "        return Objects.hash(" +
+                s +
+                ");\n" +
+                "    }";
+    }
+
+    public String createEquals() {
+        String begin = "@Override\n" +
+                "    public boolean equals(Object o) {\n" +
+                "        if (this == o) return true;\n" +
+                "        if (o == null || getClass() != o.getClass()) return false;\n" +
+                "        " + sourceClass.getName() + " " + sourceClass.getLowerCasedName() + " = (" + sourceClass.getName() + ") o;\n" +
+                "        return ";
+        //
+        StringJoiner equals = new StringJoiner("\n");
+        variables.forEach(variable -> {
+            equals.add("Objects.equals(" + variable.getName().getValue() + ", " + sourceClass.getLowerCasedName() + "." + variable.getName().getValue() + ") &&");
+        });
+        //
+        String variables = equals.toString().substring(0, equals.length() - 3) + ";}";
+        String s = begin + variables;
+        return s;
     }
 
     public List<PsiElement> getGeneratedPsiElements(Project project) {
@@ -40,8 +74,8 @@ public class ValueClass {
         classFromText.setName(sourceClass.getName());
         List<PsiElement> result = new ArrayList<>();
         Stream.of(classFromText.getAllFields()).forEach(psiField -> result.add(psiField));
-        Stream.of(classFromText.getConstructors()).forEach(psiConstructor -> result.add(psiConstructor));
         Stream.of(classFromText.getInnerClasses()).forEach(psiClass -> result.add(psiClass));
+        Stream.of(classFromText.getMethods()).forEach(psiClass -> result.add(psiClass)); // getMethod contains all constructors
         return result;
     }
 }
