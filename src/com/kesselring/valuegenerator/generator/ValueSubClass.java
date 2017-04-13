@@ -35,6 +35,7 @@ public class ValueSubClass {
         resultLineJointer.add("\tpublic " + className + "(" + classType + " " + nameValue + ") {");
         resultLineJointer.add("\t\tthis." + nameValue + " = " + nameValue + ";");
         resultLineJointer.add("\t}");
+        resultLineJointer.add(createToString());
         resultLineJointer.add(createOfMethode());
         resultLineJointer.add(createEqualsAndHash());
         resultLineJointer.add("}");
@@ -48,6 +49,13 @@ public class ValueSubClass {
                         "\t\treturn new " + this.className + "(" + nameValue + ");\n" +
                         "\t}\n";
         return result;
+    }
+
+    private String createToString() {
+        return "@Override\n" +
+                "        public String toString() {\n" +
+                "            return \"" + this.className + ":\" + " + nameValue + ";\n" +
+                "        }";
     }
 
     private String createEqualsAndHash() {

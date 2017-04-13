@@ -22,6 +22,14 @@ public class ValueClass {
         this.sourceClass = sourceClass;
     }
 
+    public static void main(String[] args) {
+        List<Variable> vars = new ArrayList<>();
+        vars.add(new Variable(new Type("java.lang.String"), new Variable.Name("surname")));
+        vars.add(new Variable(new Type("java.lang.Integer"), new Variable.Name("age")));
+        vars.add(new Variable(new Type("java.lang.String"), new Variable.Name("name")));
+        System.out.println(new ValueClass(vars, new SourceClass("Person")).createToString());
+    }
+
     public String asString() {
         StringJoiner resultLineJointer = new StringJoiner("\n");
         resultLineJointer.add(new ValueFields(variables).asString());
@@ -32,8 +40,8 @@ public class ValueClass {
                 .forEach(variable -> resultLineJointer.add(new ValueSubClass(variable).asString()));
         resultLineJointer.add(createEquals());
         resultLineJointer.add(createHashCode());
+        resultLineJointer.add(createToString());
         String complete = resultLineJointer.toString();
-        System.out.println(complete);
         return complete;
     }
 
@@ -65,6 +73,30 @@ public class ValueClass {
         String variables = equals.toString().substring(0, equals.length() - 3) + ";}";
         String s = begin + variables;
         return s;
+    }
+
+    public String createToString() {
+        String result = "    @Override\n" +
+                "    public String toString() {\n" +
+                "        return \"" + sourceClass.getName() + "{\" +\n";
+        StringJoiner subValueJoiner = new StringJoiner("\n");
+        variables.forEach(variable -> {
+                    subValueJoiner.add(
+                            "\"" + variable.getName().getValue() + ":\" + " + variable.getName().getValue() + getExtension(variable) + " + \",\"  +");
+                }
+
+        );
+        String s = result + subValueJoiner.toString() + "\n                \"}\";\n" +
+                "    }";
+        System.out.println(s);
+        return s;
+    }
+
+    public String getExtension(Variable variable) {
+        if (Type.ALL_SUPPORTED_CLASSES_AND_PRIMITIVES.values().contains(variable.getType())) {
+            return ".get()";
+        }
+        return "";
     }
 
     public List<PsiElement> getGeneratedPsiElements(Project project) {
