@@ -109,6 +109,17 @@
                     </execution>
                 </executions>
                 <dependencies>
+                    <dependency>
+                        <!--suppress MavenModelInspection -->
+                        <groupId>com.sun</groupId>
+                        <!--suppress MavenModelInspection -->
+                        <artifactId>tools</artifactId>
+                        <!--suppress MavenModelInspection -->
+                        <version>1.8</version>
+                        <scope>system</scope>
+                        <!--suppress MavenModelInspection -->
+                        <systemPath>${env.JAVA_HOME}/lib/tools.jar</systemPath>
+                    </dependency>
                 </dependencies>
             </plugin>
             <!--<plugin>
