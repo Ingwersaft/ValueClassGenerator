@@ -109,16 +109,6 @@
                     </execution>
                 </executions>
                 <dependencies>
-                    <dependency>
-                        <!--suppress MavenModelInspection -->
-                        <groupId>com.sun</groupId>
-                        <!--suppress MavenModelInspection -->
-                        <artifactId>tools</artifactId>
-                        <!--suppress MavenModelInspection -->
-                        <version>1.8</version>
-                        <scope>system</scope>
-                        <!--suppress MavenModelInspection -->
-                    </dependency>
                 </dependencies>
             </plugin>
             <!--<plugin>
