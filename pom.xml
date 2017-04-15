@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- inspired by halirutan/Mathematica-IntelliJ-Plugin -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.kesselring.valuegenerator</groupId>
+    <artifactId>ValueClassGenerator</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>TBD</name>
+    <description>
+        TBD
+    </description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <idea.ic.source>ideaIC-2017.1.1.tar.gz</idea.ic.source>
+        <idea.ic.dir>${project.build.directory}/idea-IC</idea.ic.dir>
+        <ij.plugin>true</ij.plugin>
+    </properties>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <sourceDirectory>src/</sourceDirectory>
+        <testSourceDirectory>tests/</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <!-- We need to download and unpack the IntelliJ IDEA Community Edition to -->
+                    <!-- compile the plugin on travis. The first execution just downloads the tar.gz -->
+                    <execution>
+                        <id>download-files</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- Download IDEA sources which are required to build the plugin-->
+                                <!-- For local testing, I included a copy target below and comment our the "get" -->
+                                <echo message="Downloading ${idea.ic.source} to ${project.build.directory}"/>
+                                <get src="https://download.jetbrains.com/idea/${idea.ic.source}"
+                                     dest="${project.build.directory}"
+                                     verbose="false"
+                                     usetimestamp="true"/>
+                                <!--<copy file="/home/patrick/Software/intellij/${idea.ic.source}"-->
+                                <!--tofile="${project.build.directory}/${idea.ic.source}"-->
+                                <!--verbose="true"/>-->
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>prepare</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <target>
+                                <echo message="unpacking ${idea.ic.source}"/>
+                                <untar compression="gzip" src="${project.build.directory}/${idea.ic.source}"
+                                       dest="${project.build.directory}"/>
+
+                                <echo message="moving idea sources to ${idea.ic.dir}"/>
+                                <exec executable="sh">
+                                    <arg value="-c"/>
+                                    <arg value="mv ${project.build.directory}/idea-IC-* ${idea.ic.dir}"/>
+                                </exec>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>compile-forms</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <path id="maven.plugin.complete.classpath">
+                                    <path refid="maven.plugin.classpath"/>
+                                    <fileset dir="${idea.ic.dir}/lib">
+                                        <include name="**/*.jar"/>
+                                    </fileset>
+                                </path>
+                                <taskdef name="instrumentIdeaExtensions"
+                                         classname="com.intellij.ant.InstrumentIdeaExtensions"
+                                         classpathref="maven.plugin.complete.classpath"/>
+                                <path id="sourcepath">
+                                    <dirset dir="${project.basedir}">
+                                        <include name="src"/>
+                                    </dirset>
+                                </path>
+                                <instrumentIdeaExtensions destdir="${project.build.outputDirectory}">
+                                    <classpath refid="maven.compile.classpath"/>
+                                    <src refid="sourcepath"/>
+                                </instrumentIdeaExtensions>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <!--suppress MavenModelInspection -->
+                        <groupId>com.sun</groupId>
+                        <!--suppress MavenModelInspection -->
+                        <artifactId>tools</artifactId>
+                        <!--suppress MavenModelInspection -->
+                        <version>1.8</version>
+                        <scope>system</scope>
+                        <!--suppress MavenModelInspection -->
+                        <systemPath>${env.JAVA_HOME}/lib/tools.jar</systemPath>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <showWarnings>true</showWarnings>
+                    <compilerVersion>1.8</compilerVersion>
+                    <compilerArguments>
+                        <extdirs>${idea.ic.dir}/lib/</extdirs>
+                    </compilerArguments>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+</project>

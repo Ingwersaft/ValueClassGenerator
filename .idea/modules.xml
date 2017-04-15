@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/value-generator-plugin.iml" filepath="$PROJECT_DIR$/value-generator-plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ValueClassGenerator.iml" filepath="$PROJECT_DIR$/ValueClassGenerator.iml" />
     </modules>
   </component>
 </project>
