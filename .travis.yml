@@ -1,0 +1,9 @@
+language: java
+jdk: oraclejdk8
+script: mvn -U -B clean package
+env:
+  global:
+  - GH_PROJECT_NAME: ValueClassGenerator
+  - GIT_AUTHOR_NAME: TravisCI
+  - GIT_AUTHOR_EMAIL: noreply@travis-ci.org
+  - CI_HOME=`pwd`
