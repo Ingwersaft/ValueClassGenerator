@@ -147,6 +147,30 @@
                         <!--suppress MavenModelInspection -->
                         <systemPath>${env.JAVA_HOME}/lib/tools.jar</systemPath>
                     </dependency>
+                    <dependency>
+                        <groupId>junit</groupId>
+                        <artifactId>junit</artifactId>
+                        <version>4.12</version>
+                        <scope>test</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.mockito</groupId>
+                        <artifactId>mockito-core</artifactId>
+                        <version>2.4.0</version>
+                        <scope>test</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.powermock</groupId>
+                        <artifactId>powermock-module-junit4</artifactId>
+                        <version>1.7.0RC4</version>
+                        <scope>test</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.powermock</groupId>
+                        <artifactId>powermock-api-mockito2</artifactId>
+                        <version>1.7.0RC4</version>
+                        <scope>test</scope>
+                    </dependency>
                 </dependencies>
             </plugin>
             <plugin>
