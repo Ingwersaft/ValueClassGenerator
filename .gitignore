@@ -10,3 +10,5 @@ buildNumber.properties
 out/
 .idea/workspace.xml
 /.idea/libraries/
+.gradle/
+build/
