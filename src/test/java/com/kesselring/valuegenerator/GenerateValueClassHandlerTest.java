@@ -44,7 +44,7 @@ public class GenerateValueClassHandlerTest {
         PowerMockito.when(PsiUtilBase.getPsiFileInEditor(any(Editor.class), any(Project.class))).thenReturn(mockedRootPsiFile);
 
         PsiElement[] mockedChilden = createMockedChildren();
-//        when(mockedRootPsiFile.getChildren()).thenReturn(mockedChilden);
+//         when(mockedRootPsiFile.getChildren()).thenReturn(mockedChilden);
     }
 
     private PsiElement[] createMockedChildren() {

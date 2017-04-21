@@ -1,0 +1,42 @@
+buildscript {
+    repositories {
+        mavenCentral()
+
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        maven {
+            url 'http://dl.bintray.com/jetbrains/intellij-plugin-service'
+        }
+
+    }
+    dependencies {
+        classpath "gradle.plugin.org.jetbrains:gradle-intellij-plugin:0.1.10"
+    }
+}
+
+apply plugin: 'org.jetbrains.intellij'
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile "junit:junit:4.11"
+    testCompile "org.mockito:mockito-core:2.4.0"
+    testCompile "org.powermock:powermock-module-junit4:1.7.0RC4"
+    testCompile "org.powermock:powermock-api-mockito2:1.7.0RC4"
+}
+
+test {
+    //we want display the following test events
+    testLogging {
+        events "PASSED", "STARTED", "FAILED", "SKIPPED"
+        exceptionFormat "short"
+    }
+}
+
+jar {
+    enabled = false
+}
