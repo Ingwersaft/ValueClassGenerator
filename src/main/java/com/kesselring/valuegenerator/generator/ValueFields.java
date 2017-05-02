@@ -19,7 +19,7 @@ public class ValueFields {
     public String asString() {
         StringJoiner lineJoiner = new StringJoiner("\n");
         variables.forEach(variable -> lineJoiner.add(
-                "private " + determinClassName(variable) + " " + variable.getName().getValue() + ";"));
+                "private final " + determinClassName(variable) + " " + variable.getName().getValue() + ";"));
         return lineJoiner.toString();
     }
 

@@ -5,6 +5,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiJavaToken;
 import com.intellij.psi.codeStyle.CodeStyleManager;
+import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.kesselring.valuegenerator.generator.ValueClass;
 import com.kesselring.valuegenerator.parsed.SourceClass;
 import com.kesselring.valuegenerator.parsed.Variable;
@@ -47,5 +48,6 @@ public class GeneratedValueWriter implements Runnable {
                 psiElement -> sourceJavaPsiClass.add(psiElement)
         );
         CodeStyleManager.getInstance(project).reformat(rootPsiFile);
+        JavaCodeStyleManager.getInstance(project).shortenClassReferences(rootPsiFile);
     }
 }

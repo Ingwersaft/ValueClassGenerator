@@ -12,3 +12,4 @@ out/
 /.idea/libraries/
 .gradle/
 build/
+profiles_settings.xml

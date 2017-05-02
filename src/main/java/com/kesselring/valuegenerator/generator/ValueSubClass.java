@@ -64,12 +64,12 @@ public class ValueSubClass {
                 "            if (this == o) return true;\n" +
                 "            if (o == null || getClass() != o.getClass()) return false;\n" +
                 "            " + this.className + " " + nameValue + "1 = (" + this.className + ") o;\n" +
-                "            return Objects.equals(" + nameValue + ", " + nameValue + "1." + nameValue + ");\n" +
+                "            return java.util.Objects.equals(" + nameValue + ", " + nameValue + "1." + nameValue + ");\n" +
                 "        }\n" +
                 "\n" +
                 "        @Override\n" +
                 "        public int hashCode() {\n" +
-                "            return Objects.hash(" + nameValue + ");\n" +
+                "            return java.util.Objects.hash(" + nameValue + ");\n" +
                 "        }";
     }
 

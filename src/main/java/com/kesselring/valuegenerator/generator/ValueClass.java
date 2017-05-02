@@ -51,7 +51,7 @@ public class ValueClass {
         String s = variableHashParams.toString();
         return "@Override\n" +
                 "    public int hashCode() {\n" +
-                "        return Objects.hash(" +
+                "        return java.util.Objects.hash(" +
                 s +
                 ");\n" +
                 "    }";
@@ -67,7 +67,7 @@ public class ValueClass {
         //
         StringJoiner equals = new StringJoiner("\n");
         variables.forEach(variable -> {
-            equals.add("Objects.equals(" + variable.getName().getValue() + ", " + sourceClass.getLowerCasedName() + "." + variable.getName().getValue() + ") &&");
+            equals.add("java.util.Objects.equals(" + variable.getName().getValue() + ", " + sourceClass.getLowerCasedName() + "." + variable.getName().getValue() + ") &&");
         });
         //
         String variables = equals.toString().substring(0, equals.length() - 3) + ";}";
@@ -104,6 +104,7 @@ public class ValueClass {
                 JavaPsiFacade.getInstance(project).getElementFactory().createClassFromText(
                         new ValueClass(variables, sourceClass).asString(), null);
         classFromText.setName(sourceClass.getName());
+
         List<PsiElement> result = new ArrayList<>();
         Stream.of(classFromText.getAllFields()).forEach(psiField -> result.add(psiField));
         Stream.of(classFromText.getInnerClasses()).forEach(psiClass -> result.add(psiClass));
