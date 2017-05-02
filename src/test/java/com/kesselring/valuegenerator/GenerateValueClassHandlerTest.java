@@ -4,9 +4,11 @@ import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.editor.Caret;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiUtilBase;
+import com.intellij.testFramework.LightIdeaTestCase;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(PsiUtilBase.class)
-public class GenerateValueClassHandlerTest {
+public class GenerateValueClassHandlerTest extends LightIdeaTestCase {
 
     @Mock
     private Editor mockedEditor;
@@ -35,8 +37,20 @@ public class GenerateValueClassHandlerTest {
     @Mock
     private PsiFile mockedRootPsiFile;
 
+    private String exampleClass = "import java.awt.*;\n" +
+            "\n" +
+            "public class Person {\n" +
+            "\n" +
+            "   String name;\n" +
+            "   String password;\n" +
+            "   String surname;\n" +
+            "   Integer age;\n" +
+            "   SystemColor systemColor;\n" +
+            "}\n";
+
     @Before
-    public void setup() {
+    public void setup() throws Exception {
+        super.setUp();
         MockitoAnnotations.initMocks(this);
         when(mockedDataContext.getData(anyString())).thenReturn(mockedProject);
 
@@ -44,7 +58,9 @@ public class GenerateValueClassHandlerTest {
         PowerMockito.when(PsiUtilBase.getPsiFileInEditor(any(Editor.class), any(Project.class))).thenReturn(mockedRootPsiFile);
 
         PsiElement[] mockedChilden = createMockedChildren();
-//         when(mockedRootPsiFile.getChildren()).thenReturn(mockedChilden);
+
+        PsiClass classFromText = getJavaFacade().getElementFactory().createClassFromText(exampleClass, null);
+        when(mockedRootPsiFile.getChildren()).thenReturn(classFromText.getChildren());
     }
 
     private PsiElement[] createMockedChildren() {
@@ -55,5 +71,4 @@ public class GenerateValueClassHandlerTest {
     public void firstTest() {
         new GenerateValueClassHandler().doExecute(mockedEditor, mockedCaret, mockedDataContext);
     }
-
 }
