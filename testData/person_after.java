@@ -21,16 +21,16 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return Objects.equals(name, person.name) &&
-                Objects.equals(surname, person.surname) &&
-                Objects.equals(age, person.age) &&
-                Objects.equals(alive, person.alive) &&
-                Objects.equals(nonPrimitiveOrPrimitiveWrapper, person.nonPrimitiveOrPrimitiveWrapper);
+        return java.util.Objects.equals(name, person.name) &&
+                java.util.Objects.equals(surname, person.surname) &&
+                java.util.Objects.equals(age, person.age) &&
+                java.util.Objects.equals(alive, person.alive) &&
+                java.util.Objects.equals(nonPrimitiveOrPrimitiveWrapper, person.nonPrimitiveOrPrimitiveWrapper);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, age, alive, nonPrimitiveOrPrimitiveWrapper);
+        return java.util.Objects.hash(name, surname, age, alive, nonPrimitiveOrPrimitiveWrapper);
     }
 
     @Override
@@ -69,12 +69,12 @@ public class Person {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Name name1 = (Name) o;
-            return Objects.equals(name, name1.name);
+            return java.util.Objects.equals(name, name1.name);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(name);
+            return java.util.Objects.hash(name);
         }
     }
 
@@ -103,12 +103,12 @@ public class Person {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Surname surname1 = (Surname) o;
-            return Objects.equals(surname, surname1.surname);
+            return java.util.Objects.equals(surname, surname1.surname);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(surname);
+            return java.util.Objects.hash(surname);
         }
     }
 
@@ -137,12 +137,12 @@ public class Person {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Age age1 = (Age) o;
-            return Objects.equals(age, age1.age);
+            return java.util.Objects.equals(age, age1.age);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(age);
+            return java.util.Objects.hash(age);
         }
     }
 
@@ -171,12 +171,12 @@ public class Person {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Alive alive1 = (Alive) o;
-            return Objects.equals(alive, alive1.alive);
+            return java.util.Objects.equals(alive, alive1.alive);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(alive);
+            return java.util.Objects.hash(alive);
         }
     }
 }

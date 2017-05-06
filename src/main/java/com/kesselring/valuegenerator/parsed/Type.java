@@ -18,7 +18,17 @@ public class Type {
             new AbstractMap.SimpleEntry<>("float", new Type("java.lang.Float")),
             new AbstractMap.SimpleEntry<>("long", new Type("java.lang.Long")),
             new AbstractMap.SimpleEntry<>("short", new Type("java.lang.Short")),
-            new AbstractMap.SimpleEntry<>("double", new Type("java.lang.Double"))
+            new AbstractMap.SimpleEntry<>("double", new Type("java.lang.Double")),
+            // also fix without package:
+            new AbstractMap.SimpleEntry<>("String", new Type("java.lang.String")),
+            new AbstractMap.SimpleEntry<>("Integer", new Type("java.lang.Integer")),
+            new AbstractMap.SimpleEntry<>("Boolean", new Type("java.lang.Boolean")),
+            new AbstractMap.SimpleEntry<>("Byte", new Type("java.lang.Byte")),
+            new AbstractMap.SimpleEntry<>("Character", new Type("java.lang.Character")),
+            new AbstractMap.SimpleEntry<>("Float", new Type("java.lang.Float")),
+            new AbstractMap.SimpleEntry<>("Long", new Type("java.lang.Long")),
+            new AbstractMap.SimpleEntry<>("Short", new Type("java.lang.Short")),
+            new AbstractMap.SimpleEntry<>("Double", new Type("java.lang.Double"))
     ).collect(Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue()));
 
     private Package aPackage;
@@ -53,7 +63,9 @@ public class Type {
                 System.out.println("no equivalent found: " + primitiveEquivalents + " for canonicalName=" + canonicalName);
                 return canonicalName;
             } else {
-                return primitiveEquivalents.get(0);
+                String s = primitiveEquivalents.get(0);
+                System.out.println("found: " + s);
+                return s;
             }
         } else {
             return canonicalName;
