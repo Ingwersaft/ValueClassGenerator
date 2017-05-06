@@ -17,6 +17,7 @@ buildscript {
 
 apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
+apply plugin: "jacoco"
 
 repositories {
     mavenCentral()
@@ -39,4 +40,12 @@ test {
 
 jar {
     enabled = false
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled true
+        html.destination "${buildDir}/jacocoHtml"
+    }
 }
