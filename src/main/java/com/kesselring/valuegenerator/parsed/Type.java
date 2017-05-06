@@ -72,10 +72,6 @@ public class Type {
         }
     }
 
-    private boolean isPrimitive(String canonicalName) {
-        return false;
-    }
-
     public Package getaPackage() {
         return aPackage;
     }

@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.testFramework.EditorActionTestCase;
 
 public class GenerateValueClassHandlerTest extends EditorActionTestCase {
+
     public void testPerson() throws Exception {
         setupAction();
         doFileTest("/person_before.java", "/person_after.java");

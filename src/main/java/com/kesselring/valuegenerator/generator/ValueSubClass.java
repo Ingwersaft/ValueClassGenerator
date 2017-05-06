@@ -7,13 +7,11 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 public class ValueSubClass {
-    private Variable variable;
     private String className;
     private String nameValue;
     private String classType;
 
     public ValueSubClass(Variable variable) {
-        this.variable = variable;
         this.classType = variable.getType().getClassName().getValue();
         this.nameValue = variable.getName().getValue();
         this.className = nameValue.substring(0, 1).toUpperCase() + nameValue.substring(1);
