@@ -1,6 +1,7 @@
 # ValueClassGenerator
 [![Build Status](https://travis-ci.org/Ingwersaft/ValueClassGenerator.svg?branch=master)](https://travis-ci.org/Ingwersaft/ValueClassGenerator)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1189fda83a6d4621adb76ea485ce10a1)](https://www.codacy.com/app/Ingwersaft/ValueClassGenerator?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Ingwersaft/ValueClassGenerator&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/1189fda83a6d4621adb76ea485ce10a1)](https://www.codacy.com/app/Ingwersaft/ValueClassGenerator?utm_source=github.com&utm_medium=referral&utm_content=Ingwersaft/ValueClassGenerator&utm_campaign=Badge_Coverage)
 
 IntelliJ IDEA Plugin that helps generating Value classes without the need to add any libs to your build (like google autovalue)
 
