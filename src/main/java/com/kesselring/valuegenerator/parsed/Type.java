@@ -33,7 +33,13 @@ public class Type {
         this.className = new ClassName(className);
     }
 
+    public Type(Package aPackage, ClassName className) {
+        this.aPackage = aPackage;
+        this.className = className;
+    }
+
     private String convertPrimitiveToWrapper(String canonicalName) {
+        System.out.println("canonicalName=" + canonicalName);
         if (!canonicalName.contains(".")) {
             System.out.println("going to handle primitive: " + canonicalName);
             List<String> primitiveEquivalents = ALL_SUPPORTED_CLASSES_AND_PRIMITIVES.entrySet().stream()
@@ -44,7 +50,8 @@ public class Type {
                                     + stringTypeEntry.getValue().getClassName().getValue())
                     .collect(Collectors.toList());
             if (primitiveEquivalents.size() != 1) {
-                throw new IllegalStateException("no equivalent found: " + primitiveEquivalents);
+                System.out.println("no equivalent found: " + primitiveEquivalents + " for canonicalName=" + canonicalName);
+                return canonicalName;
             } else {
                 return primitiveEquivalents.get(0);
             }
@@ -55,11 +62,6 @@ public class Type {
 
     private boolean isPrimitive(String canonicalName) {
         return false;
-    }
-
-    public Type(Package aPackage, ClassName className) {
-        this.aPackage = aPackage;
-        this.className = className;
     }
 
     public Package getaPackage() {
@@ -99,12 +101,12 @@ public class Type {
     public static class Package {
         private String value;
 
-        public String getValue() {
-            return value;
-        }
-
         public Package(String value) {
             this.value = value;
+        }
+
+        public String getValue() {
+            return value;
         }
 
         @Override
@@ -126,12 +128,12 @@ public class Type {
     public static class ClassName {
         private String value;
 
-        public String getValue() {
-            return value;
-        }
-
         public ClassName(String value) {
             this.value = value;
+        }
+
+        public String getValue() {
+            return value;
         }
 
         @Override
