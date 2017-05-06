@@ -50,3 +50,7 @@ jacocoTestReport {
         html.enabled false
     }
 }
+configure(jacocoTestReport){
+    group = "check"
+    description = 'Run coverage analysis'
+}
