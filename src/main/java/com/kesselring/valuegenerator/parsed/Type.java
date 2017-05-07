@@ -1,9 +1,6 @@
 package com.kesselring.valuegenerator.parsed;
 
-import java.util.AbstractMap;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,13 +40,17 @@ public class Type {
         this.className = new ClassName(className);
     }
 
-    public Type(Package aPackage, ClassName className) {
-        this.aPackage = aPackage;
-        this.className = className;
+    public static Boolean isSupportedPrimitiveOrWrapper(Type type) {
+        Set<String> supported = ALL_SUPPORTED_CLASSES_AND_PRIMITIVES.values()
+                .stream()
+                .map(t -> t.getClassName().getValue())
+                .collect(Collectors.toSet());
+        boolean result = supported.contains(type.className.getValue());
+        System.out.println("isSupportedPrimitiveOrWrapper for " + type + ": " + result);
+        return result;
     }
 
     private String convertPrimitiveToWrapper(String canonicalName) {
-        System.out.println("canonicalName=" + canonicalName);
         if (!canonicalName.contains(".")) {
             System.out.println("going to handle primitive: " + canonicalName);
             List<String> primitiveEquivalents = ALL_SUPPORTED_CLASSES_AND_PRIMITIVES.entrySet().stream()
@@ -79,6 +80,8 @@ public class Type {
     public ClassName getClassName() {
         return className;
     }
+
+//    public static Boolean is
 
     @Override
     public String toString() {

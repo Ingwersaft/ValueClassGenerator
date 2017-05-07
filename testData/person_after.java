@@ -16,6 +16,26 @@ public class Person {
         this.nonPrimitiveOrPrimitiveWrapper = nonPrimitiveOrPrimitiveWrapper;
     }
 
+    public Name getName() {
+        return name;
+    }
+
+    public Surname getSurname() {
+        return surname;
+    }
+
+    public Age getAge() {
+        return age;
+    }
+
+    public Alive getAlive() {
+        return alive;
+    }
+
+    public SystemColor getNonPrimitiveOrPrimitiveWrapper() {
+        return nonPrimitiveOrPrimitiveWrapper;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

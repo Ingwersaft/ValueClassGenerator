@@ -16,10 +16,18 @@ import java.util.stream.Stream;
 public class ValueClass {
     private List<Variable> variables;
     private SourceClass sourceClass;
+    private Access access;
+
+    public ValueClass(List<Variable> variables, SourceClass sourceClass, Access access) {
+        this.variables = variables;
+        this.sourceClass = sourceClass;
+        this.access = access;
+    }
 
     public ValueClass(List<Variable> variables, SourceClass sourceClass) {
         this.variables = variables;
         this.sourceClass = sourceClass;
+        this.access = Access.METHOD;
     }
 
     public static void main(String[] args) {
@@ -27,13 +35,21 @@ public class ValueClass {
         vars.add(new Variable(new Type("java.lang.String"), new Variable.Name("surname")));
         vars.add(new Variable(new Type("java.lang.Integer"), new Variable.Name("age")));
         vars.add(new Variable(new Type("java.lang.String"), new Variable.Name("name")));
-        System.out.println(new ValueClass(vars, new SourceClass("Person")).createToString());
+        System.out.println("result:\n" + new ValueClass(vars, new SourceClass("Person"), Access.METHOD).asString());
+    }
+
+    private void createGetter(StringJoiner joiner) {
+        joiner.add(new ValueGetter(variables).asString());
+        joiner.add("");
     }
 
     public String asString() {
         StringJoiner resultLineJointer = new StringJoiner("\n");
-        resultLineJointer.add(new ValueFields(variables).asString());
+        resultLineJointer.add(new ValueFields(variables, access).asString());
         resultLineJointer.add("");
+        if (access == Access.METHOD) {
+            createGetter(resultLineJointer);
+        }
         resultLineJointer.add(new Constructor(sourceClass, variables).asString());
         resultLineJointer.add("");
         variables.stream().filter(variable -> Type.ALL_SUPPORTED_CLASSES_AND_PRIMITIVES.values().contains(variable.getType()))
@@ -43,6 +59,11 @@ public class ValueClass {
         resultLineJointer.add(createToString());
         String complete = resultLineJointer.toString();
         return complete;
+    }
+
+    public enum Access {
+        METHOD,
+        FIELD
     }
 
     private String createHashCode() {

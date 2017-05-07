@@ -19,7 +19,7 @@ public class ValueSubClass {
 
     public static void main(String[] args) {
         System.out.println(new ValueSubClass(
-                new Variable(new Type("java.lang.String"), new Variable.Name("testValue"))).createEqualsAndHash());
+                new Variable(new Type("java.lang.String"), new Variable.Name("testValue"))).asString());
         System.out.println(Alive.of(Boolean.TRUE).equals(Alive.of(Boolean.TRUE)));
     }
 
