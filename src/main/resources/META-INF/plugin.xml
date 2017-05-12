@@ -6,7 +6,11 @@
     </vendor>
 
     <description><![CDATA[
-      Value class generation. If you don't like writing value classes and also don't want to use AutoValue or Lombok, this is your plugin<br>
+      IntelliJ IDEA Plugin that helps generating Value classes without the need to add any libs to your build (like google autovalue or project lombok).<br><br>
+
+      usage:
+      1. Create your data class and define your properties
+      2. right-click into the editor and click onto the `Generate value class` button
     ]]></description>
 
     <!--<change-notes><![CDATA[-->

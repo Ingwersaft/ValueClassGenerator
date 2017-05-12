@@ -3,12 +3,29 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1189fda83a6d4621adb76ea485ce10a1)](https://www.codacy.com/app/Ingwersaft/ValueClassGenerator?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Ingwersaft/ValueClassGenerator&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/1189fda83a6d4621adb76ea485ce10a1)](https://www.codacy.com/app/Ingwersaft/ValueClassGenerator?utm_source=github.com&utm_medium=referral&utm_content=Ingwersaft/ValueClassGenerator&utm_campaign=Badge_Coverage)
 
-IntelliJ IDEA Plugin that helps generating Value classes without the need to add any libs to your build (like google autovalue)
+IntelliJ IDEA Plugin that helps generating Value classes without the need to add any libs to your build 
+(like google autovalue or project lombok).
 
-:exclamation:WARNING: project is TBD, see [#2](/../../issues/2) and [#3](/../../issues/3) for main features
+*Features*
 
-# Source
+*done*
+ * primitives/primitive wrapper will be subclassed
+ * equals/hashcode/toString
+ 
+*soon™*
+ * see enhancement issues
+
+# Usage
+
+1. Create your data class and define your properties
+2. right-click into the editor and click onto the `Generate value class` button
+
+# Example
+## Origin
 ````java
+import java.awt.*;
+import java.util.Objects;
+
 public class Person {
     private String name;
     private String surname;
@@ -18,14 +35,17 @@ public class Person {
 }
 ````
 
-# Result
+## Result
 ````java
+import java.awt.*;
+import java.util.Objects;
+
 public class Person {
-    private Name name;
-    private Surname surname;
-    private Age age;
-    private Alive alive;
-    private SystemColor nonPrimitiveOrPrimitiveWrapper;
+    private final Name name;
+    private final Surname surname;
+    private final Age age;
+    private final Alive alive;
+    private final SystemColor nonPrimitiveOrPrimitiveWrapper;
 
     public Person(Name name, Surname surname, Age age, Alive alive, SystemColor nonPrimitiveOrPrimitiveWrapper) {
         this.name = name;
@@ -35,21 +55,41 @@ public class Person {
         this.nonPrimitiveOrPrimitiveWrapper = nonPrimitiveOrPrimitiveWrapper;
     }
 
+    public Name getName() {
+        return name;
+    }
+
+    public Surname getSurname() {
+        return surname;
+    }
+
+    public Age getAge() {
+        return age;
+    }
+
+    public Alive getAlive() {
+        return alive;
+    }
+
+    public SystemColor getNonPrimitiveOrPrimitiveWrapper() {
+        return nonPrimitiveOrPrimitiveWrapper;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return Objects.equals(name, person.name) &&
-                Objects.equals(surname, person.surname) &&
-                Objects.equals(age, person.age) &&
-                Objects.equals(alive, person.alive) &&
-                Objects.equals(nonPrimitiveOrPrimitiveWrapper, person.nonPrimitiveOrPrimitiveWrapper);
+        return java.util.Objects.equals(name, person.name) &&
+                java.util.Objects.equals(surname, person.surname) &&
+                java.util.Objects.equals(age, person.age) &&
+                java.util.Objects.equals(alive, person.alive) &&
+                java.util.Objects.equals(nonPrimitiveOrPrimitiveWrapper, person.nonPrimitiveOrPrimitiveWrapper);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, age, alive, nonPrimitiveOrPrimitiveWrapper);
+        return java.util.Objects.hash(name, surname, age, alive, nonPrimitiveOrPrimitiveWrapper);
     }
 
     @Override
@@ -88,12 +128,12 @@ public class Person {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Name name1 = (Name) o;
-            return Objects.equals(name, name1.name);
+            return java.util.Objects.equals(name, name1.name);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(name);
+            return java.util.Objects.hash(name);
         }
     }
 
@@ -122,12 +162,12 @@ public class Person {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Surname surname1 = (Surname) o;
-            return Objects.equals(surname, surname1.surname);
+            return java.util.Objects.equals(surname, surname1.surname);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(surname);
+            return java.util.Objects.hash(surname);
         }
     }
 
@@ -156,12 +196,12 @@ public class Person {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Age age1 = (Age) o;
-            return Objects.equals(age, age1.age);
+            return java.util.Objects.equals(age, age1.age);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(age);
+            return java.util.Objects.hash(age);
         }
     }
 
@@ -190,12 +230,12 @@ public class Person {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Alive alive1 = (Alive) o;
-            return Objects.equals(alive, alive1.alive);
+            return java.util.Objects.equals(alive, alive1.alive);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(alive);
+            return java.util.Objects.hash(alive);
         }
     }
 }
