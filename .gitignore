@@ -13,3 +13,4 @@ out/
 .gradle/
 build/
 profiles_settings.xml
+.idea/
