@@ -1,18 +1,17 @@
 buildscript {
     repositories {
-        mavenCentral()
-
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-        maven {
-            url 'http://dl.bintray.com/jetbrains/intellij-plugin-service'
-        }
-
+        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
     }
-    dependencies {
-        classpath "gradle.plugin.org.jetbrains:gradle-intellij-plugin:0.1.10"
-    }
+}
+
+plugins {
+    id "org.jetbrains.intellij" version "0.2.9"
+}
+
+intellij {
+    version = '2016.1'
+//    pluginName = 'GenerateValueClass'
+    updateSinceUntilBuild = false
 }
 
 apply plugin: 'org.jetbrains.intellij'
@@ -38,10 +37,6 @@ test {
     }
 }
 
-jar {
-    enabled = false
-}
-
 jacocoTestReport {
     reports {
         xml.enabled true
@@ -50,7 +45,7 @@ jacocoTestReport {
         html.enabled false
     }
 }
-configure(jacocoTestReport){
+configure(jacocoTestReport) {
     group = "check"
     description = 'Run coverage analysis'
 }
