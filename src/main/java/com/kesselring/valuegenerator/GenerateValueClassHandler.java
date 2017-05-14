@@ -43,7 +43,7 @@ public class GenerateValueClassHandler extends EditorActionHandler {
                 .peek(System.out::println)
                 .map(psiElement -> (PsiClass) psiElement)
                 .collect(Collectors.toList()).get(0);
-        SourceClass sourceClass = new SourceClass(sourceClassName.getQualifiedName());
+        SourceClass sourceClass = new SourceClass(sourceClassName.getName());
 
         List<Variable> extractedVariables = Stream.of(rootPsiFile.getChildren())
                 .filter(psiElement -> psiElement instanceof PsiClassImpl)

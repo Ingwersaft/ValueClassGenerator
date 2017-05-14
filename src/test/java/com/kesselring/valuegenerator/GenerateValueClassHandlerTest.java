@@ -5,6 +5,11 @@ import com.intellij.testFramework.EditorActionTestCase;
 
 public class GenerateValueClassHandlerTest extends EditorActionTestCase {
 
+    public void testPersonWithPackage() throws Exception {
+        setupAction();
+        doFileTest("/person_with_package_before.java", "/person_with_package_after.java");
+    }
+
     public void testPerson() throws Exception {
         setupAction();
         doFileTest("/person_before.java", "/person_after.java");
