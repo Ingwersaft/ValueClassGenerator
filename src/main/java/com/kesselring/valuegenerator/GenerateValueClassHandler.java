@@ -56,6 +56,7 @@ public class GenerateValueClassHandler extends EditorActionHandler {
                         new Variable.Name(psiVariable.getName())))
                 .peek(System.out::println)
                 .collect(Collectors.toList());
+        if (extractedVariables.isEmpty()) return;
 
         PsiClassImpl sourceJavaPsiClass = getRootClassUnderOperation(rootPsiFile);
         if (sourceJavaPsiClass == null) return;
